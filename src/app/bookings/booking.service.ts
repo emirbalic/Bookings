@@ -6,8 +6,8 @@ import { take, delay, tap, switchMap, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 interface BookingFireData {
-  bookedFrom: Date;
-  bookedTo: Date;
+  bookedFrom: string; // used to be date for all when worked
+  bookedTo: string; // also this one
   firstName: string;
   guestNumber: number;
   lastName: string;
@@ -81,7 +81,9 @@ export class BookingService {
   fetchBookings() {
     return this.http
       .get<{ [key: string]: BookingFireData }>(
-        'https://ionic-booking-6a659.firebaseio.com/bookings.json'
+        `https://ionic-booking-6a659.firebaseio.com/bookings.json?orderBy="userId"&equalTo="${
+          this.authService.userid
+        }"`
       )
       .pipe(
         map(data => {
@@ -107,7 +109,7 @@ export class BookingService {
           // return [];
           return bookings;
         }),
-        tap( bookings => {
+        tap(bookings => {
           this._bookings.next(bookings);
         })
         // looking into data...
@@ -118,14 +120,70 @@ export class BookingService {
   }
 
   cancelBooking(bookingId: string) {
-    return this.bookings.pipe(
-      take(1),
-      delay(1000),
-      tap(bookings => {
-        this._bookings.next(
-          bookings.filter(booking => booking.id !== bookingId)
-        );
-      })
-    );
+    return this.http
+      .delete(
+        `https://ionic-booking-6a659.firebaseio.com/bookings/${bookingId}.json`
+      )
+      .pipe(
+        switchMap(() => {
+          return this.bookings;
+        }),
+        take(1),
+        tap(bookings => {
+          this._bookings.next(
+            bookings.filter(booking => booking.id !== bookingId)
+          );
+        })
+      );
+
+    // return this.bookings.pipe(
+    //   take(1),
+    //   delay(1000),
+    //   tap(bookings => {
+    //     this._bookings.next(
+    //       bookings.filter(booking => booking.id !== bookingId)
+    //     );
+    //   })
+    // );
   }
 }
+
+// All bookings by everyone
+// fetchBookings() {
+//   return this.http
+//     .get<{ [key: string]: BookingFireData }>(
+//       'https://ionic-booking-6a659.firebaseio.com/bookings.json'
+//     )
+//     .pipe(
+//       map(data => {
+//         const bookings = [];
+//         for (const key in data) {
+//           if (data.hasOwnProperty(key)) {
+//             bookings.push(
+//               new Booking(
+//                 key,
+//                 data[key].placeId,
+//                 data[key].userId,
+//                 data[key].placeTitle,
+//                 data[key].placeImage,
+//                 data[key].firstName,
+//                 data[key].lastName,
+//                 data[key].guestNumber,
+//                 new Date(data[key].bookedFrom),
+//                 new Date(data[key].bookedTo)
+//               )
+//             );
+//           }
+//         }
+//         // return [];
+//         return bookings;
+//       }),
+//       tap( bookings => {
+//         this._bookings.next(bookings);
+//       })
+//       // looking into data...
+//       // tap(data => {
+//       //   console.log(data);
+//       // })
+//     );
+// }

@@ -24,6 +24,10 @@
         <ion-list >
           <ion-item-sliding *ngFor="let booking of bookings" #selected>
             <ion-item>
+              <ion-avatar margin>
+                <ion-img [src]="booking.placeImage">
+                </ion-img>
+              </ion-avatar>
               <ion-label>
                 <h5>
                   {{booking.placeTitle}} 

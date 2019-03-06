@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+// import { Plugins, CameraResultType } from '@capacitor/core';
+
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 

@@ -15,7 +15,6 @@ export class BookingsPage implements OnInit, OnDestroy {
   private subscription: Subscription;
   isLoading = false;
 
-
   constructor(
     private bookingService: BookingService,
     private loadingController: LoadingController,
@@ -29,7 +28,7 @@ export class BookingsPage implements OnInit, OnDestroy {
   }
   ionViewWillEnter() {
     this.isLoading = true;
-    this.bookingService.fetchBookings().subscribe( ()=> {
+    this.bookingService.fetchBookings().subscribe(() => {
       this.isLoading = false;
     });
   }
