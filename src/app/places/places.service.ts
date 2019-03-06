@@ -112,7 +112,7 @@ export class PlacesService {
       Math.random().toString(),
       title,
       description,
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJGctIQHwa-fCe-FbIb8yZS0NQx2v1GSHrfQRl0Ih6nTAXc8bt',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-86rDItgGyZMjp7R9Z1NLj640No5UjBAoa4_2UmQO60Sd0QhjvA',
       price,
       dateFrom,
       dateTo,
